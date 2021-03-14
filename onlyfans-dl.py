@@ -126,22 +126,21 @@ def download_public_files():
 
 # download a media item and save it to the relevant directory
 def download_media(media, is_archived):
-    id = str(media["id"])
     source = media["source"]["source"]
 
     if (media["type"] != "photo" and media["type"] != "video") or not media['canView']:
         return
 
-    # find extension
-    ext = re.findall('\.\w+\?', source)
-    if len(ext) == 0:
+    # find file name
+    fname = re.findall('\w+\.\w+\?', source)
+    if len(fname) == 0:
         return
-    ext = ext[0][:-1]
+    fname = fname[0][:-1]
 
     if is_archived:
-        path = "/archived/" + media["type"] + "s/" + id + ext
+        path = "/archived/" + media["type"] + "s/" + fname
     else:
-        path = "/" + media["type"] + "s/" + id + ext
+        path = "/" + media["type"] + "s/" + fname
     if not os.path.isfile("profiles/" + PROFILE + path):
         # print(path)
         global new_files
